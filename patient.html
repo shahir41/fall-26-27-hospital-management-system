@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Patient dashboard of CareNest Hospital">
+    <title>Patient Dashboard | CareNest Hospital</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <a href="index.html" class="logo">Care<span>Nest</span></a>
+        <div class="user-info">
+            <span class="badge patient">Patient</span>
+            <span>Welcome, Rahim Uddin</span>
+            <a href="index.html" class="btn btn-small btn-light">Logout</a>
+        </div>
+    </header>
+
+    <nav class="topnav">
+        <button type="button" id="nav-dashboardSection" onclick="showSection('dashboardSection')">My Profile</button>
+        <button type="button" id="nav-appointmentsSection" onclick="showSection('appointmentsSection')">My
+            Appointments</button>
+        <button type="button" id="nav-paymentsSection" onclick="showSection('paymentsSection')">Online Payment</button>
+        <button type="button" id="nav-reviewsSection" onclick="showSection('reviewsSection')">Doctor Reviews</button>
+        <button type="button" id="nav-ambulanceSection" onclick="showSection('ambulanceSection')">Request
+            Ambulance</button>
+        <button type="button" id="nav-doctorsSection" onclick="showSection('doctorsSection')">Search Doctors</button>
+        <button type="button" id="nav-notificationsSection" onclick="showSection('notificationsSection')">Notifications
+        </button>
+    </nav>
+
+    <main class="container">
+
+        <section id="dashboardSection" class="page-section">
+            <h2 class="page-title">My Profile</h2>
+            <p class="page-subtitle">View and update your personal information.</p>
+
+            <div id="profileMessage" class="message"></div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h3>Personal Information</h3>
+                        <form id="profileForm" onsubmit="return updateProfile()">
+                            <fieldset>
+                                <legend>Profile Details</legend>
+                                <table class="form-table">
+                                    <tr>
+                                        <td><label for="patientName">Full name:</label></td>
+                                        <td>
+                                            <input type="text" id="patientName" value="Rahim Uddin">
+                                            <span class="error" id="patientNameError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="patientEmail">Email:</label></td>
+                                        <td>
+                                            <input type="email" id="patientEmail" value="rahim@example.com">
+                                            <span class="error" id="patientEmailError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="patientPhone">Phone:</label></td>
+                                        <td>
+                                            <input type="tel" id="patientPhone" value="01700000000">
+                                            <span class="error" id="patientPhoneError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="patientAddress">Address:</label></td>
+                                        <td>
+                                            <textarea id="patientAddress" rows="3"
+                                                cols="30">Dhaka, Bangladesh</textarea>
+                                            <span class="error" id="patientAddressError"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                            <input type="submit" class="btn" value="Update Profile">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="appointmentsSection" class="page-section">
+            <h2 class="page-title">My Appointments</h2>
+            <p class="page-subtitle">Book an appointment with a doctor or manage your existing appointments.</p>
+
+            <div id="appointmentMessage" class="message"></div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h3 id="appointmentFormTitle">Book an Appointment</h3>
+                        <form id="appointmentForm" onsubmit="return saveAppointment()">
+                            <fieldset>
+                                <legend>Appointment Details</legend>
+                                <table class="form-table">
+                                    <tr>
+                                        <td><label for="appointmentDoctor">Doctor:</label></td>
+                                        <td>
+                                            <select id="appointmentDoctor">
+                                                <option value="">Select a doctor</option>
+                                                <option value="Dr. Ahmed">Dr. Ahmed - Cardiology</option>
+                                                <option value="Dr. Sarah">Dr. Sarah - Dermatology</option>
+                                                <option value="Dr. Hasan">Dr. Hasan - Medicine</option>
+                                            </select>
+                                            <span class="error" id="appointmentDoctorError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="appointmentDate">Date:</label></td>
+                                        <td>
+                                            <input type="date" id="appointmentDate">
+                                            <span class="error" id="appointmentDateError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="appointmentTime">Time:</label></td>
+                                        <td>
+                                            <input type="time" id="appointmentTime">
+                                            <span class="error" id="appointmentTimeError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="appointmentReason">Reason:</label></td>
+                                        <td>
+                                            <textarea id="appointmentReason" rows="4" cols="30"
+                                                placeholder="Describe your reason for the appointment"></textarea>
+                                            <span class="error" id="appointmentReasonError"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                            <input type="submit" id="appointmentSaveButton" class="btn" value="Book Appointment">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="resetAppointmentForm()">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-wide">
+                    <div class="card">
+                        <h3>My Appointments</h3>
+                        <div class="search-bar">
+                            <input type="text" id="appointmentSearch"
+                                placeholder="Search by doctor, date or appointment id..."
+                                onkeyup="renderAppointments()">
+                            <select id="appointmentStatusFilter" onchange="renderAppointments()">
+                                <option value="All">Any status</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <p class="result-count" id="appointmentCount"></p>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Doctor</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Reason</th>
+                                        <th>Status</th>
+                                        <th>Prescription</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="appointmentTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="paymentsSection" class="page-section">
+            <h2 class="page-title">Online Payment</h2>
+            <p class="page-subtitle">View your bills and make payments for doctor visits and report showing.</p>
+
+            <div id="paymentMessage" class="message"></div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h3>Make a Payment</h3>
+                        <form id="paymentForm" onsubmit="return makePayment()">
+                            <fieldset>
+                                <legend>Payment Details</legend>
+                                <table class="form-table">
+                                    <tr>
+                                        <td><label for="paymentBill">Select bill:</label></td>
+                                        <td>
+                                            <select id="paymentBill" onchange="syncBillAmount()"></select>
+                                            <span class="error" id="paymentBillError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="paymentAmount">Amount (৳):</label></td>
+                                        <td>
+                                            <input type="number" id="paymentAmount" min="1" step="0.01"
+                                                placeholder="Enter full bill amount">
+                                            <span class="error" id="paymentAmountError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="paymentMethod">Payment method:</label></td>
+                                        <td>
+                                            <select id="paymentMethod">
+                                                <option value="">Select method</option>
+                                                <option value="bKash">bKash</option>
+                                                <option value="Nagad">Nagad</option>
+                                                <option value="Card">Debit/Credit Card</option>
+                                                <option value="Cash">Cash at Hospital</option>
+                                            </select>
+                                            <span class="error" id="paymentMethodError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="paymentReference">Transaction reference:</label></td>
+                                        <td>
+                                            <input type="text" id="paymentReference"
+                                                placeholder="Enter transaction reference">
+                                            <span class="error" id="paymentReferenceError"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                            <input type="submit" class="btn btn-success" value="Pay Now">
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card">
+                        <h3>My Bills</h3>
+                        <div class="search-bar">
+                            <input type="text" id="billSearch" placeholder="Search by bill id or service..."
+                                onkeyup="renderPayments()">
+                        </div>
+                        <p class="result-count" id="billCount"></p>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Bill ID</th>
+                                        <th>Service</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="billTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Payment History</h3>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Bill ID</th>
+                                <th>Payment Date</th>
+                                <th>Method</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="paymentHistoryBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="reviewsSection" class="page-section">
+            <h2 class="page-title">Doctor Reviews</h2>
+            <p class="page-subtitle">Share your experience and manage the reviews you have submitted.</p>
+
+            <div id="reviewMessage" class="message"></div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h3 id="reviewFormTitle">Write a Review</h3>
+                        <form id="reviewForm" onsubmit="return saveReview()">
+                            <fieldset>
+                                <legend>Review Details</legend>
+                                <table class="form-table">
+                                    <tr>
+                                        <td><label for="reviewDoctor">Doctor:</label></td>
+                                        <td>
+                                            <select id="reviewDoctor">
+                                                <option value="">Select a doctor</option>
+                                                <option value="Dr. Ahmed">Dr. Ahmed</option>
+                                                <option value="Dr. Sarah">Dr. Sarah</option>
+                                                <option value="Dr. Hasan">Dr. Hasan</option>
+                                            </select>
+                                            <span class="error" id="reviewDoctorError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="reviewRating">Rating:</label></td>
+                                        <td>
+                                            <select id="reviewRating">
+                                                <option value="">Select rating</option>
+                                                <option value="5">5 - Excellent</option>
+                                                <option value="4">4 - Very Good</option>
+                                                <option value="3">3 - Good</option>
+                                                <option value="2">2 - Fair</option>
+                                                <option value="1">1 - Poor</option>
+                                            </select>
+                                            <span class="error" id="reviewRatingError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="reviewComment">Comment:</label></td>
+                                        <td>
+                                            <textarea id="reviewComment" rows="4" cols="30"
+                                                placeholder="Write your experience"></textarea>
+                                            <span class="error" id="reviewCommentError"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                            <input type="submit" id="reviewSaveButton" class="btn" value="Submit Review">
+                            <button type="button" class="btn btn-secondary" onclick="resetReviewForm()">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-wide">
+                    <div class="card">
+                        <h3>My Reviews</h3>
+                        <div class="search-bar">
+                            <input type="text" id="reviewSearch" placeholder="Search by doctor or comment..."
+                                onkeyup="renderReviews()">
+                            <select id="reviewRatingFilter" onchange="renderReviews()">
+                                <option value="All">All ratings</option>
+                                <option value="5">5 stars</option>
+                                <option value="4">4 stars</option>
+                                <option value="3">3 stars</option>
+                                <option value="2">2 stars</option>
+                                <option value="1">1 star</option>
+                            </select>
+                        </div>
+                        <p class="result-count" id="reviewCount"></p>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Doctor</th>
+                                        <th>Rating</th>
+                                        <th>Comment</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reviewTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ambulanceSection" class="page-section">
+            <h2 class="page-title">Request Ambulance</h2>
+            <p class="page-subtitle">Submit an ambulance request. Hospital administration will review it and assign an
+                ambulance.</p>
+
+            <div id="ambulanceRequestMessage" class="message"></div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h3>Ambulance Request Details</h3>
+                        <form id="ambulanceRequestForm" onsubmit="return saveAmbulanceRequest()">
+                            <fieldset>
+                                <legend>Patient and Emergency Details</legend>
+                                <table class="form-table">
+                                    <tr>
+                                        <td><label for="ambulanceRequestPatient">Patient name:</label></td>
+                                        <td>
+                                            <input type="text" id="ambulanceRequestPatient" value="Rahim Uddin">
+                                            <span class="error" id="ambulanceRequestPatientError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="ambulanceRequestPhone">Contact number:</label></td>
+                                        <td>
+                                            <input type="tel" id="ambulanceRequestPhone" value="01700000000"
+                                                placeholder="01XXXXXXXXX">
+                                            <span class="error" id="ambulanceRequestPhoneError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="ambulanceRequestLocation">Pickup location:</label></td>
+                                        <td>
+                                            <textarea id="ambulanceRequestLocation" rows="3" cols="30"
+                                                placeholder="Enter the complete pickup address"></textarea>
+                                            <span class="error" id="ambulanceRequestLocationError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="ambulanceRequestDestination">Destination:</label></td>
+                                        <td>
+                                            <input type="text" id="ambulanceRequestDestination"
+                                                value="CareNest Hospital">
+                                            <span class="error" id="ambulanceRequestDestinationError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="ambulanceRequestType">Ambulance type:</label></td>
+                                        <td>
+                                            <select id="ambulanceRequestType">
+                                                <option value="">Select ambulance type</option>
+                                                <option value="Basic Life Support">Basic Life Support</option>
+                                                <option value="Advanced Life Support">Advanced Life Support</option>
+                                                <option value="Patient Transport">Patient Transport</option>
+                                            </select>
+                                            <span class="error" id="ambulanceRequestTypeError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="ambulanceRequestDate">Required date:</label></td>
+                                        <td>
+                                            <input type="date" id="ambulanceRequestDate">
+                                            <span class="error" id="ambulanceRequestDateError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="ambulanceRequestTime">Required time:</label></td>
+                                        <td>
+                                            <input type="time" id="ambulanceRequestTime">
+                                            <span class="error" id="ambulanceRequestTimeError"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                            <input type="submit" id="ambulanceRequestSaveButton" class="btn btn-success"
+                                value="Submit Ambulance Request">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="resetAmbulanceRequestForm()">Clear</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-wide">
+                    <div class="card">
+                        <h3>My Ambulance Requests</h3>
+                        <div class="search-bar">
+                            <input type="text" id="ambulanceRequestSearch"
+                                placeholder="Search by request id, location or date..."
+                                onkeyup="renderAmbulanceRequests()">
+                            <select id="ambulanceRequestStatusFilter" onchange="renderAmbulanceRequests()">
+                                <option value="All">Any status</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Dispatched">Dispatched</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <p class="result-count" id="ambulanceRequestCount"></p>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Request ID</th>
+                                        <th>Pickup Location</th>
+                                        <th>Destination</th>
+                                        <th>Type</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Assigned Ambulance</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="patientAmbulanceRequestTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="doctorsSection" class="page-section">
+            <h2 class="page-title">Search Doctors</h2>
+            <p class="page-subtitle">Find doctors by name or specialization.</p>
+
+            <div class="card">
+                <div class="search-bar">
+                    <input type="text" id="doctorSearch" placeholder="Search by doctor name or specialization..."
+                        onkeyup="renderDoctors()">
+                    <select id="doctorSpecialtyFilter" onchange="renderDoctors()">
+                        <option value="All">All specializations</option>
+                        <option value="Cardiology">Cardiology</option>
+                        <option value="Dermatology">Dermatology</option>
+                        <option value="Medicine">Medicine</option>
+                        <option value="Neurology">Neurology</option>
+                        <option value="Orthopedics">Orthopedics</option>
+                        <option value="Pediatrics">Pediatrics</option>
+                    </select>
+                </div>
+                <p class="result-count" id="doctorCount"></p>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Doctor ID</th>
+                                <th>Name</th>
+                                <th>Specialization</th>
+                                <th>Available Days</th>
+                                <th>Consultation Fee</th>
+                            </tr>
+                        </thead>
+                        <tbody id="doctorTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <section id="notificationsSection" class="page-section">
+            <h2 class="page-title">My Notifications</h2>
+            <p class="page-subtitle">Appointment and reschedule updates from the hospital.</p>
+            <div class="card">
+                <h3>Notifications</h3>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Notify ID</th>
+                                <th>Type</th>
+                                <th>Subject</th>
+                                <th>Message</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientNotificationTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        &copy; 2026 CareNest Hospital
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/patient.js"></script>
+</body>
+
+</html>
