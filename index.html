@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="CareNest Hospital: Find specialist doctors, book appointments, and manage your healthcare online.">
+  <title>Home | CareNest Hospital</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <header class="header">
+    <a href="index.html" class="logo">CareNest<span>Hospital</span></a>
+    <div class="user-info">
+      <a href="login.html" class="btn btn-small btn-light">Login</a>
+      <a href="register.html" class="btn btn-small">Register</a>
+    </div>
+  </header>
+
+  <nav class="topnav">
+    <a href="index.html" class="active">Home</a>
+    <a href="#about">About Us</a>
+    <a href="#doctors">Doctors</a>
+    <a href="#services">Services</a>
+    <a href="#hours">Opening Hours</a>
+    <a href="#contact">Contact Us</a>
+  </nav>
+
+  <div class="hero">
+    <h1>Your Health, Our Priority</h1>
+    <p>Find experienced specialist doctors and book your appointment with ease.</p>
+  </div>
+
+  <main class="container">
+
+    <div class="feature-strip">
+      <div class="feature">
+        <span class="feature-icon">🎯</span>
+        <h3>Our Mission</h3>
+        <p>To provide accessible, specialist-led consultation and follow-up care with clear communication and fair
+          pricing.</p>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">👁</span>
+        <h3>Our Vision</h3>
+        <p>A fully connected hospital where every patient can manage appointments, reports and prescriptions online.</p>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">🤝</span>
+        <h3>Our Values</h3>
+        <p>Compassion, honesty, privacy of patient information and continuous improvement through patient feedback.</p>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">24/7</span>
+        <h3>Emergency Care</h3>
+        <p>Emergency assistance and ambulance support whenever you need urgent medical attention.</p>
+      </div>
+    </div>
+
+    <section id="doctors" class="home-section">
+      <div class="section-heading">
+        <h2>Our Specialist Doctors</h2>
+        <p>Find experienced doctors from different medical departments.</p>
+      </div>
+      <div class="card">
+        <p class="result-count" id="catalogCount"></p>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Doctor Name</th>
+                <th>Specialization</th>
+                <th>Department</th>
+                <th>Experience</th>
+                <th>Available Days</th>
+                <th>Availability</th>
+              </tr>
+            </thead>
+            <tbody id="catalogBody"></tbody>
+          </table>
+        </div>
+        <p class="hint">Want to book an appointment? <a href="register.html">create a patient account</a> or
+          <a href="login.html">log in</a>.
+        </p>
+      </div>
+    </section>
+
+    <section id="about" class="home-section">
+      <div class="section-heading">
+        <h2>Who We Serve?</h2>
+        <p>CareNest provides dedicated services for patients and healthcare professionals.</p>
+      </div>
+
+      <div class="role-grid">
+        <div class="role-card admin">
+          <span class="badge admin">Admin</span>
+          <h3>Administrators</h3>
+          <ul>
+            <li>>Manage doctors, receptionists and patients</li>
+            <li>Analyze patient reviews and reports</li>
+            <li>Arrange doctor meetings</li>
+            <li>Manage ambulance bookings</li>
+          </ul>
+          <a href="login.html" class="btn btn-success">Admin Login</a>
+        </div>
+
+        <div class="role-card doctor">
+          <span class="badge doctor">Doctor</span>
+          <h3>Doctors</h3>
+          <ul>
+            <li>View assigned patients</li>
+            <li>Manage appointments</li>
+            <li>Provide digital prescriptions</li>
+            <li>Access patient medical history</li>
+            <li>Download patient reports</li>
+          </ul>
+          <br>
+          <a href="login.html" class="btn btn-success">Doctor Login</a>
+        </div>
+
+        <div class="role-card receptionist">
+          <span class="badge receptionist">Receptionist</span>
+          <h3>Receptionists</h3>
+          <ul>
+            <li>Manage patient appointments</li>
+            <li>Monitor patient queues</li>
+            <li>Handle patient billing</li>
+            <li>Notify patients about rescheduling</li>
+            <li>Manage patient records</li>
+          </ul>
+          <a href="login.html" class="btn btn-success">Receptionist Login</a>
+        </div>
+
+        <div class="role-card patient">
+          <span class="badge patient">Patient</span>
+          <h3>Patients</h3>
+          <ul>
+            <li>Register and manage profiles</li>
+            <li>Book doctor appointments and make online payments</li>
+            <li>View prescriptions and medical history</li>
+            <li>Submit doctor reviews</li>
+          </ul>
+          <a href="register.html" class="btn">Register as Patient</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="home-section">
+      <div class="section-heading">
+        <h2>How CareNest Works</h2>
+        <p>Getting healthcare has never been easier.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <span class="step-number">1</span>
+          <h3>>Create an Account</h3>
+          <p>Open <a href="register.html">Register</a>, Register as a patient by providing your personal information and
+            creating your account.</p>
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          <h3>Book an Appointment</h3>
+          <p> Browse specialist doctors, select your preferred doctor and schedule an appointment.</p>
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          <h3>Receive Medical Care</h3>
+          <p>Visit the hospital, consult your doctor, receive prescriptions and manage your medical records online.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="row">
+      <section id="hours" class="col home-section">
+        <div class="card">
+          <h3>Opening hours</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Days</th>
+                <th>Hours</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Sunday - Thursday</td>
+                <td>8:00 AM - 10:00 PM</td>
+              </tr>
+              <tr>
+                <td>Friday</td>
+                <td>3:00 PM - 10:00 PM</td>
+              </tr>
+              <tr>
+                <td>Saturday</td>
+                <td>10:00 AM - 10:00 PM</td>
+              </tr>
+              <tr>
+                <td>Emergency Department</td>
+                <td>24 Hours</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="hint">The Hospital may close early on public holidays.</p>
+        </div>
+      </section>
+
+      <section id="contact" class="col home-section">
+        <div class="card">
+          <h3>Contact Us</h3>
+          <p><strong>CareNest Hospital</strong><br>
+            CNH</p>
+          <table class="contact-table">
+            <tr>
+              <td>Address:</td>
+              <td>408/1 (Old KA 66/1), Kuratoli, Kuril, Khilkhet, Dhaka 1229, Bangladesh</td>
+            </tr>
+            <tr>
+              <td>Phone:</td>
+              <td>+88 02 841 4046-9</td>
+            </tr>
+            <tr>
+              <td>Email:</td>
+              <td><a href="mailto:info@cnhmedical.com">info@cnhmedical.com</a></td>
+            </tr>
+            <tr>
+              <td>Website:</td>
+              <td><a href="https://www.cnhmedical.com" target="_blank">www.cnhmedical.com</a></td>
+            </tr>
+          </table>
+          <p class="hint">Need help with your health condition? Visit ours hospital's front desk.</p>
+        </div>
+      </section>
+    </div>
+
+    <section class="home-section">
+      <div class="cta-band">
+        <h2>Take the First Step Towards Better Health</h2>
+        <p>Register today and book an appointment with our specialist doctors.</p>
+        <a href="register.html" class="btn btn-light">Create an account</a>
+        <a href="login.html" class="btn btn-success">I already have one</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 CareNest Hospital
+  </footer>
+</body>
+<script src="js/data.js"></script>
+<script src="js/common.js"></script>
+<script src="js/home.js"></script>
+
+</html>
