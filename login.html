@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Login to the CareNest Hospital Management System">
+  <title>Login | CareNest Hospital</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <header class="header">
+    <a href="index.html" class="logo">CareNest<span>Hospital</span></a>
+    <div class="user-info">
+      <a href="login.html" class="btn btn-small btn-light">Login</a>
+      <a href="register.html" class="btn btn-small">Register</a>
+
+    </div>
+  </header>
+
+  <nav class="topnav">
+    <a href="index.html">Home</a>
+    <a href="index.html#about">About Us</a>
+    <a href="index.html#doctors">Doctors</a>
+    <a href="index.html#services">Services</a>
+    <a href="index.html#hours">Opening Hours</a>
+    <a href="index.html#contact">Contact Us</a>
+  </nav>
+
+  <main class="container">
+    <div class="auth-box">
+
+      <div class="card">
+        <p class="page-subtitle">
+          Login to access your CareNest account. Your dashboard will depend on your assigned role.
+        </p>
+
+        <div id="loginMessage" class="message"></div>
+
+        <form id="loginForm" action="index.html" method="get" onsubmit="return validateLogin()">
+          <fieldset>
+            <legend>Your account</legend>
+            <table class="form-table">
+              <tr>
+                <td><label for="username">Username or Email:</label></td>
+                <td>
+                  <input type="text" id="username" name="username" placeholder="Your username or email" required>
+                  <span class="error" id="usernameError"></span>
+                </td>
+              </tr>
+              <tr>
+                <td><label for="password">Password:</label></td>
+                <td>
+                  <input type="password" id="password" placeholder="Enter your password" required>
+                  <span class="error" id="passwordError"></span>
+                  <input type="checkbox" id="showPassword" onchange="togglePassword()">
+                  <label for="showPassword" class="option-label">Show password</label>
+                </td>
+              </tr>
+            </table>
+          </fieldset>
+
+          <input type="submit" class="btn btn-block" value="Login">
+        </form>
+
+        <p class="auth-switch">Don't have an account? <a href="register.html">Register here</a></p>
+      </div>
+      <div class="card">
+        <h3>Demo Accounts</h3>
+        <p class="hint">Click "Use" to fill the login form, then press Login.</p>
+
+        <table class="demo-accounts">
+          <tr>
+            <td><span class="badge admin">Admin</span></td>
+            <td>admin / admin1234</td>
+            <td>
+              <button type="button" class="btn btn-small" onclick="fillDemo('admin', 'admin1234')">Use</button>
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="badge doctor">Doctor</span></td>
+            <td>doctor / doctor123</td>
+            <td>
+              <button type="button" class="btn btn-small" onclick="fillDemo('doctor', 'doctor123')">Use</button>
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="badge receptionist">Receptionist</span></td>
+            <td>receptionist / reception123</td>
+            <td>
+              <button type="button" class="btn btn-small"
+                onclick="fillDemo('receptionist', 'reception123')">Use</button>
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="badge patient">Patient</span></td>
+            <td>patient / patient123</td>
+            <td>
+              <button type="button" class="btn btn-small" onclick="fillDemo('patient', 'patient123')">Use</button>
+            </td>
+          </tr>
+        </table>
+
+        <p class="hint">
+          These are demo accounts for testing the hospital management system.
+          Use credentials configured in js/data.js.
+        </p>
+      </div>
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 CareNest Hospital
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/login.js"></script>
+</body>
+
+</html>

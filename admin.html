@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Admin dashboard of CareNest Hospital">
+  <title>Admin Dashboard | CareNest Hospital</title>
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+  <header class="header">
+    <a href="index.html" class="logo">CareNest<span>Hospital</span></a>
+    <div class="user-info">
+      <span class="badge admin">Admin</span>
+      <span>Welcome, Rifat Hasan</span>
+      <a href="index.html" class="btn btn-small btn-light">Logout</a>
+    </div>
+  </header>
+
+  <nav class="topnav">
+    <button type="button" id="nav-statsSection" onclick="showSection('statsSection')">Statistics</button>
+    <button type="button" id="nav-usersSection" onclick="showSection('usersSection')">Manage Users</button>
+    <button type="button" id="nav-ambulanceSection" onclick="showSection('ambulanceSection')">Ambulance Service</button>
+    <button type="button" id="nav-reviewsSection" onclick="showSection('reviewsSection')">Doctor Reviews</button>
+  </nav>
+
+  <main class="container">
+
+    <section id="statsSection" class="page-section">
+      <h2 class="page-title">Hospital Statistics Report</h2>
+      <p class="page-subtitle"> Overview of hospital users, appointments and services.
+        <span id="reportTime" class="hint"></span>
+      </p>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number" id="statPatients">0</div>
+          <div class="stat-label">Total Patients</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statDoctors">0</div>
+          <div class="stat-label">Total Doctors</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statReceptionists">0</div>
+          <div class="stat-label">Receptionists</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statAppointments">0</div>
+          <div class="stat-label">Total Appointments</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statPending">0</div>
+          <div class="stat-label">Pending Appointments</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statAmbulances">0</div>
+          <div class="stat-label">Ambulance Requests</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statReviews">0</div>
+          <div class="stat-label">Doctor Reviews</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-number" id="statActiveUsers">0</div>
+          <div class="stat-label">Active Accounts</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <h3>Users by Role</h3>
+            <div id="roleChart"></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <h3>Appointment Overview</h3>
+            <div id="appointmentChart"></div>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn" onclick="generateReport()">
+        Refresh Report
+      </button>
+    </section>
+
+    <section id="usersSection" class="page-section">
+      <h2 class="page-title">Manage Users</h2>
+      <div id="userMessage" class="message"></div>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <h3 id="userFormTitle">Add New Staff Account</h3>
+            <form id="userForm" onsubmit="return saveUser()">
+              <fieldset>
+                <legend>User Details</legend>
+                <table class="form-table">
+                  <tr>
+                    <td>
+                      <label for="userName">Full Name:</label>
+                    </td>
+                    <td>
+                      <input type="text" id="userName" placeholder="e.g. Nadia Islam" required>
+                      <span class="error" id="userNameError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="userUsername">Username:</label>
+                    </td>
+                    <td>
+                      <input type="text" id="userUsername" placeholder="At least 4 characters" required>
+                      <span class="error" id="userUsernameError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="userEmail">Email:</label>
+                    </td>
+                    <td>
+                      <input type="email" id="userEmail" placeholder="name@example.com" required>
+                      <span class="error" id="userEmailError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="userPassword">Password:</label>
+                    </td>
+                    <td>
+                      <input type="password" id="userPassword" placeholder="At least 8 characters">
+                      <span class="error" id="userPasswordError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="userRole">Role:</label>
+                    </td>
+                    <td>
+                      <select id="userRole" required>
+                        <option value="">-- Select Role --</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Doctor">Doctor</option>
+                        <option value="Receptionist">Receptionist</option>
+                      </select>
+                      <span class="error" id="userRoleError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Status:</td>
+                    <td>
+                      <input type="radio" id="statusActive" name="userStatus" value="Active" checked>
+                      <label for="statusActive" class="option-label">
+                        Active
+                      </label>
+                      <input type="radio" id="statusBlocked" name="userStatus" value="Blocked">
+                      <label for="statusBlocked" class="option-label">
+                        Blocked
+                      </label>
+                    </td>
+                  </tr>
+                </table>
+              </fieldset>
+              <input type="submit" id="userSaveButton" class="btn" value="Add Staff Account">
+              <button type="button" class="btn btn-secondary" onclick="resetUserForm()">
+                Cancel
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="col-wide">
+          <div class="card">
+            <h3>All Hospital Users</h3>
+            <div class="search-bar">
+              <input type="text" id="userSearch" placeholder="Search by name, username or email..."
+                onkeyup="renderUsers()">
+              <select id="userRoleFilter" onchange="renderUsers()">
+                <option value="All">All Roles</option>
+                <option value="Admin">Admin</option>
+                <option value="Doctor">Doctor</option>
+                <option value="Receptionist">Receptionist</option>
+                <option value="Patient">Patient</option>
+              </select>
+              <select id="userStatusFilter" onchange="renderUsers()">
+                <option value="All">Any Status</option>
+                <option value="Active">Active</option>
+                <option value="Blocked">Blocked</option>
+              </select>
+            </div>
+            <p class="result-count" id="userCount"></p>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="userTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ambulanceSection" class="page-section">
+      <h2 class="page-title">Ambulance Service Management</h2>
+      <p class="page-subtitle">
+        Manage ambulance requests and arrange emergency transportation
+        for patients.
+      </p>
+
+      <div class="card">
+
+        <h3>Ambulance Requests</h3>
+
+        <div class="search-bar">
+
+          <input type="text" id="ambulanceSearch" placeholder="Search patient or location..."
+            onkeyup="renderAmbulances()">
+
+          <select id="ambulanceStatusFilter" onchange="renderAmbulances()">
+            <option value="All">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Dispatched">Dispatched</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+        <p class="result-count" id="ambulanceCount"></p>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Patient</th>
+                <th>Phone</th>
+                <th>Pickup Location</th>
+                <th>Type</th>
+                <th>Date & Time</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ambulanceTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="ambulanceMessage" class="message"></div>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <h3 id="ambulanceFormTitle">Book an Ambulance</h3>
+            <form id="ambulanceForm" onsubmit="return saveAmbulance()">
+              <fieldset>
+                <legend>Patient and Emergency Details</legend>
+                <table class="form-table">
+                  <tr>
+                    <td>
+                      <label for="ambulancePatient">Patient Name:</label>
+                    </td>
+                    <td>
+                      <input type="text" id="ambulancePatient" placeholder="Enter patient name" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="ambulancePhone">Phone Number:</label>
+                    </td>
+                    <td>
+                      <input type="tel" id="ambulancePhone" placeholder="01XXXXXXXXX" pattern="01[3-9][0-9]{8}"
+                        required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="ambulanceLocation">Pickup Location:</label>
+                    </td>
+                    <td>
+                      <textarea id="ambulanceLocation" placeholder="Enter pickup address" rows="3" required></textarea>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="ambulanceDestination">Destination:</label>
+                    </td>
+                    <td>
+                      <input type="text" id="ambulanceDestination" placeholder="Hospital / destination" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="ambulanceType">Ambulance Type:</label>
+                    </td>
+                    <td>
+                      <select id="ambulanceType" required>
+                        <option value="">Select Type</option>
+                        <option value="General">General Ambulance</option>
+                        <option value="AC">AC Ambulance</option>
+                        <option value="ICU">ICU Ambulance</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="ambulanceDate">Required Date:</label>
+                    </td>
+                    <td>
+                      <input type="date" id="ambulanceDate" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="ambulanceTime">Required Time:</label>
+                    </td>
+                    <td>
+                      <input type="time" id="ambulanceTime" required>
+                    </td>
+                  </tr>
+                </table>
+              </fieldset>
+              <input type="submit" class="btn" id="ambulanceSaveButton" value="Book Ambulance">
+              <button type="button" class="btn btn-secondary" onclick="resetAmbulanceForm()">
+                Cancel
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="reviewsSection" class="page-section">
+
+      <h2 class="page-title">Doctor Ratings and Reviews</h2>
+
+      <p class="page-subtitle">
+        Monitor patient feedback and arrange meetings with doctors
+        to discuss reviews and improve healthcare services.
+      </p>
+
+      <div id="reviewMessage" class="message"></div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number" id="reviewTotal">0</div>
+          <div class="stat-label">Total Reviews</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="reviewAverage">0.0</div>
+          <div class="stat-label">Average Rating</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="reviewPending">0</div>
+          <div class="stat-label">Reviews to Discuss</div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Patient Feedback</h3>
+        <div class="search-bar">
+          <input type="text" id="reviewSearch" placeholder="Search doctor or patient..." onkeyup="renderReviews()">
+          <select id="reviewRatingFilter" onchange="renderReviews()">
+            <option value="All">All Ratings</option>
+            <option value="5">5 Stars</option>
+            <option value="4">4 Stars</option>
+            <option value="3">3 Stars</option>
+            <option value="2">2 Stars</option>
+            <option value="1">1 Star</option>
+          </select>
+        </div>
+        <p class="result-count" id="reviewCount"></p>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Rating</th>
+                <th>Review</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="reviewTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <h3>Arrange Meeting with Doctor</h3>
+            <form id="meetingForm" onsubmit="return saveMeeting()">
+              <fieldset>
+                <legend>Meeting Details</legend>
+                <table class="form-table">
+                  <tr>
+                    <td>
+                      <label for="meetingDoctor">Select Doctor:</label>
+                    </td>
+                    <td>
+                      <select id="meetingDoctor" required>
+                        <option value="">Select Doctor</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="meetingSubject">Meeting Subject:</label>
+                    </td>
+                    <td>
+                      <input type="text" id="meetingSubject" placeholder="e.g. Patient feedback discussion" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="meetingDate">Meeting Date:</label>
+                    </td>
+                    <td>
+                      <input type="date" id="meetingDate" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="meetingTime">Meeting Time:</label>
+                    </td>
+                    <td>
+                      <input type="time" id="meetingTime" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="meetingMessage">Message:</label>
+                    </td>
+                    <td>
+                      <textarea id="meetingMessage" rows="3" placeholder="Meeting details..." required></textarea>
+                    </td>
+                  </tr>
+                </table>
+              </fieldset>
+              <input type="submit" class="btn" value="Schedule Meeting">
+            </form>
+          </div>
+        </div>
+
+        <div class="col">
+
+          <div class="card">
+
+            <h3>Scheduled Doctor Meetings</h3>
+
+            <div class="table-wrapper">
+
+              <table class="data-table">
+
+                <thead>
+                  <tr>
+                    <th>Doctor</th>
+                    <th>Subject</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="meetingTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 CareNest Hospital
+  </footer>
+  <script src="js/data.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/admin.js"></script>
+
+</body>
+
+</html>
