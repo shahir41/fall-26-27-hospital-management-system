@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Receptionist dashboard of CareNest Hospital">
+  <title>Receptionist Dashboard | CareNest Hospital</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <header class="header">
+    <a href="index.html" class="logo">Care<span>Nest</span></a>
+    <div class="user-info">
+      <span class="badge receptionist">Receptionist</span>
+      <span>Welcome, Shirin Akter</span>
+      <a href="index.html" class="btn btn-small btn-light">Logout</a>
+    </div>
+  </header>
+
+  <nav class="topnav">
+    <button type="button" id="nav-appointmentsSection"
+      onclick="showSection('appointmentsSection')">Appointments</button>
+    <button type="button" id="nav-queueSection" onclick="showSection('queueSection')">Patient Queue</button>
+    <button type="button" id="nav-billingSection" onclick="showSection('billingSection')">Billing</button>
+    <button type="button" id="nav-notificationsSection" onclick="showSection('notificationsSection')">Patient
+      Notifications</button>
+  </nav>
+
+  <main class="container">
+
+    <section id="appointmentsSection" class="page-section">
+      <h2 class="page-title">Appointments</h2>
+      <p class="page-subtitle">View and update patient appointment details.</p>
+      <div id="appointmentMessage" class="message"></div>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <h3 id="appointmentFormTitle">Edit Appointment</h3>
+            <form id="appointmentForm" onsubmit="return saveAppointment()">
+              <fieldset>
+                <legend>Appointment Details</legend>
+                <table class="form-table">
+                  <tr>
+                    <td><label for="appointmentPatient">Patient name:</label></td>
+                    <td><input type="text" id="appointmentPatient" placeholder="Enter patient name" required></td>
+                  </tr>
+                  <tr>
+                    <td><label for="appointmentDoctor">Doctor:</label></td>
+                    <td><select id="appointmentDoctor" required>
+                        <option value="">Select a doctor</option>
+                        <option value="Dr. Ahmed">Dr. Ahmed</option>
+                        <option value="Dr. Nusrat">Dr. Nusrat</option>
+                        <option value="Dr. Rahman">Dr. Rahman</option>
+                      </select></td>
+                  </tr>
+                  <tr>
+                    <td><label for="appointmentDate">Date:</label></td>
+                    <td><input type="date" id="appointmentDate" required></td>
+                  </tr>
+                  <tr>
+                    <td><label for="appointmentTime">Time:</label></td>
+                    <td><input type="time" id="appointmentTime" required></td>
+                  </tr>
+                </table>
+              </fieldset>
+              <input type="submit" id="appointmentSaveButton" class="btn" value="Update Appointment">
+              <button type="button" class="btn btn-secondary" onclick="resetAppointmentForm()">Cancel</button>
+            </form>
+          </div>
+        </div>
+        <div class="col-wide">
+          <div class="card">
+            <h3>Appointment Records</h3>
+            <div class="search-bar">
+              <input type="text" id="appointmentSearch" placeholder="Search by patient or doctor..."
+                onkeyup="renderAppointments()">
+              <select id="appointmentStatusFilter" onchange="renderAppointments()">
+                <option value="All">Any status</option>
+                <option value="Waiting">Waiting</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+
+              </select>
+            </div>
+            <p class="result-count" id="appointmentCount"></p>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Appointment ID</th>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Notify ID</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="appointmentTableBody"></tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="queueSection" class="page-section">
+      <h2 class="page-title">Patient Queue</h2>
+      <p class="page-subtitle">Manage patient check-ins, admission queue, and appointment status.</p>
+
+      <div id="queueMessage" class="message"></div>
+
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <h3 id="queueFormTitle">Edit Queue Status</h3>
+            <form id="queueForm" onsubmit="return saveQueueEntry()">
+              <fieldset>
+                <legend>Queue Details</legend>
+                <table class="form-table">
+                  <tr>
+                    <td><label for="queuePatient">Patient name:</label></td>
+                    <td>
+                      <input type="text" id="queuePatient" placeholder="Enter patient name" readonly>
+                      <span class="error" id="queuePatientError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="queuePatientId">Patient ID:</label></td>
+                    <td>
+                      <input type="text" id="queuePatientId" placeholder="e.g. PAT-001" readonly>
+                      <span class="error" id="queuePatientIdError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="queuePhone">Phone:</label></td>
+                    <td>
+                      <input type="tel" id="queuePhone" placeholder="01XXXXXXXXX" readonly>
+                      <span class="error" id="queuePhoneError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="queueDoctor">Assigned doctor:</label></td>
+                    <td>
+                      <select id="queueDoctor" disabled>
+                        <option value="">Select a doctor</option>
+                        <option value="Dr. Ahmed">Dr. Ahmed</option>
+                        <option value="Dr. Nusrat">Dr. Nusrat</option>
+                        <option value="Dr. Rahman">Dr. Rahman</option>
+                      </select>
+                      <span class="error" id="queueDoctorError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="queueType">Visit type:</label></td>
+                    <td>
+                      <select id="queueType" disabled>
+                        <option value="Appointment">Appointment</option>
+                        <option value="Walk-in">Walk-in</option>
+                        <option value="Admission">Admission</option>
+                        <option value="Emergency">Emergency</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="queueDate">Date:</label></td>
+                    <td>
+                      <input type="date" id="queueDate" readonly>
+                      <span class="error" id="queueDateError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="queueTime">Arrival time:</label></td>
+                    <td>
+                      <input type="time" id="queueTime" readonly>
+                      <span class="error" id="queueTimeError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="queueStatus">Queue status:</label></td>
+                    <td>
+                      <select id="queueStatus">
+                        <option value="Waiting">Waiting</option>
+                        <option value="In Consultation">In Consultation</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+              </fieldset>
+              <input type="submit" id="queueSaveButton" class="btn" value="Update Queue Status">
+              <button type="button" class="btn btn-secondary" onclick="resetQueueForm()">Cancel</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-wide">
+          <div class="card">
+            <h3>Today's Patient Queue</h3>
+            <div class="search-bar">
+              <input type="text" id="queueSearch" placeholder="Search by patient, patient id or doctor..."
+                onkeyup="renderQueue()">
+              <select id="queueStatusFilter" onchange="renderQueue()">
+                <option value="All">Any status</option>
+                <option value="Waiting">Waiting</option>
+                <option value="In Consultation">In Consultation</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+            <p class="result-count" id="queueCount"></p>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Queue ID</th>
+                    <th>Patient</th>
+                    <th>Patient ID</th>
+                    <th>Doctor</th>
+                    <th>Visit Type</th>
+                    <th>Arrival</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="queueTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <section id="billingSection" class="page-section">
+      <h2 class="page-title">Patient Billing</h2>
+      <p class="page-subtitle">Prepare patient bills, record payments, and track outstanding balances.</p>
+
+      <div id="billingMessage" class="message"></div>
+
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <h3 id="billingFormTitle">Create Patient Bill</h3>
+            <form id="billingForm" onsubmit="return saveBill()">
+              <fieldset>
+                <legend>Billing Details</legend>
+                <table class="form-table">
+                  <tr>
+                    <td><label for="billingPatient">Patient name:</label></td>
+                    <td>
+                      <input type="text" id="billingPatient" placeholder="Enter patient name">
+                      <span class="error" id="billingPatientError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="billingPatientId">Patient ID:</label></td>
+                    <td>
+                      <input type="text" id="billingPatientId" placeholder="e.g. PAT-001">
+                      <span class="error" id="billingPatientIdError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="billingType">Bill type:</label></td>
+                    <td>
+                      <select id="billingType">
+                        <option value="Consultation-Full">Consultation-Full</option>
+                        <option value="Consultation-Half">Consultation-Half</option>
+                        <option value="Revisit">Revisit</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="billingDescription">Description:</label></td>
+                    <td>
+                      <input type="text" id="billingDescription" placeholder="Service or treatment details">
+                      <span class="error" id="billingDescriptionError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="billingAmount">Total amount (৳):</label></td>
+                    <td>
+                      <input type="number" id="billingAmount" min="0" step="0.01" placeholder="0.00">
+                      <span class="error" id="billingAmountError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="billingPaid">Amount paid (৳):</label></td>
+                    <td>
+                      <input type="number" id="billingPaid" min="0" step="0.01" value="0">
+                      <span class="error" id="billingPaidError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="billingDate">Bill date:</label></td>
+                    <td>
+                      <input type="date" id="billingDate">
+                      <span class="error" id="billingDateError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="billingStatus">Payment status:</label></td>
+                    <td>
+                      <select id="billingStatus">
+                        <option value="Unpaid">Unpaid</option>
+                        <option value="Partial">Partially Paid</option>
+                        <option value="Paid">Paid</option>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+              </fieldset>
+              <input type="submit" id="billingSaveButton" class="btn" value="Save Bill">
+              <button type="button" class="btn btn-secondary" onclick="resetBillingForm()">Cancel</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-wide">
+          <div class="card">
+            <h3>Billing Records</h3>
+            <div class="search-bar">
+              <input type="text" id="billingSearch" placeholder="Search by bill id, patient or description..."
+                onkeyup="renderBills()">
+              <select id="billingStatusFilter" onchange="renderBills()">
+                <option value="All">Any payment status</option>
+                <option value="Unpaid">Unpaid</option>
+                <option value="Partial">Partially Paid</option>
+                <option value="Paid">Paid</option>
+              </select>
+            </div>
+            <p class="result-count" id="billingCount"></p>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Bill ID</th>
+                    <th>Patient</th>
+                    <th>Patient ID</th>
+                    <th>Bill Type</th>
+                    <th>Total (৳)</th>
+                    <th>Paid (৳)</th>
+                    <th>Due (৳)</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="billingTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <section id="notificationsSection" class="page-section">
+      <h2 class="page-title">Patient Notifications</h2>
+      <p class="page-subtitle">Send patients updates about appointment changes, queue status, billing, and admission.
+      </p>
+
+      <div id="notificationMessage" class="message"></div>
+
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <h3 id="notificationFormTitle">Create Notification</h3>
+            <form id="notificationForm" onsubmit="return saveNotification()">
+              <fieldset>
+                <legend>Notification Details</legend>
+                <table class="form-table">
+                  <tr>
+                    <td><label for="notificationPatient">Patient name:</label></td>
+                    <td>
+                      <input type="text" id="notificationPatient" placeholder="Enter patient name">
+                      <span class="error" id="notificationPatientError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="notificationPatientId">Patient ID:</label></td>
+                    <td>
+                      <input type="text" id="notificationPatientId" placeholder="e.g. PAT-001">
+                      <span class="error" id="notificationPatientIdError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="notificationType">Notification type:</label></td>
+                    <td>
+                      <select id="notificationType">
+                        <option value="Appointment">Appointment Update</option>
+                        <option value="Reschedule">Rescheduled Appointment</option>
+                        <option value="Queue">Queue Update</option>
+                        <option value="Billing">Billing Reminder</option>
+                        <option value="Admission">Admission Update</option>
+                        <option value="General">General Notice</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="notificationChannel">Send through:</label></td>
+                    <td>
+                      <select id="notificationChannel">
+                        <option value="SMS">SMS</option>
+                        <option value="Email">Email</option>
+                        <option value="In-app">In-app notification</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="notificationSubject">Subject:</label></td>
+                    <td>
+                      <input type="text" id="notificationSubject" placeholder="Notification subject">
+                      <span class="error" id="notificationSubjectError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="notificationText">Message:</label></td>
+                    <td>
+                      <textarea id="notificationText" rows="4" cols="30"
+                        placeholder="Write the message for the patient"></textarea>
+                      <span class="error" id="notificationTextError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="notificationStatus">Status:</label></td>
+                    <td>
+                      <select id="notificationStatus">
+                        <option value="Draft">Draft</option>
+                        <option value="Ready">Ready to Send</option>
+                        <option value="Sent">Sent</option>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+              </fieldset>
+              <input type="submit" id="notificationSaveButton" class="btn" value="Save Notification">
+              <button type="button" class="btn btn-secondary" onclick="resetNotificationForm()">Cancel</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-wide">
+          <div class="card">
+            <h3>Notification Records</h3>
+            <div class="search-bar">
+              <input type="text" id="notificationSearch" placeholder="Search by patient, notification id or subject..."
+                onkeyup="renderNotifications()">
+              <select id="notificationStatusFilter" onchange="renderNotifications()">
+                <option value="All">Any status</option>
+                <option value="Draft">Draft</option>
+                <option value="Ready">Ready to Send</option>
+                <option value="Sent">Sent</option>
+              </select>
+            </div>
+            <p class="result-count" id="notificationCount"></p>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Notification ID</th>
+                    <th>Patient</th>
+                    <th>Type</th>
+                    <th>Channel</th>
+                    <th>Subject</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="notificationTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 CareNest Hospital
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/receptionist.js"></script>
+</body>
+
+</html>
