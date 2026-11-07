@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Doctor dashboard of CareNest Hospital">
+  <title>Doctor Dashboard | CareNest Hospital</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <header class="header">
+    <a href="index.html" class="logo">Care<span>Nest</span></a>
+    <div class="user-info">
+      <span class="badge doctor">Doctor</span>
+      <span>Welcome, Dr. Ahmed</span>
+      <a href="index.html" class="btn btn-small btn-light">Logout</a>
+    </div>
+  </header>
+
+  <nav class="topnav">
+    <button type="button" id="nav-prescriptionsSection"
+      onclick="showSection('prescriptionsSection')">Prescriptions</button>
+    <button type="button" id="nav-scheduleSection" onclick="showSection('scheduleSection')">Schedule &amp;
+      Reschedule</button>
+    <button type="button" id="nav-historySection" onclick="showSection('historySection')">Patient Medical
+      History</button>
+    <button type="button" id="nav-messagesSection" onclick="showSection('messagesSection')">Admin Messages
+    </button>
+  </nav>
+
+  <main class="container">
+
+    <section id="prescriptionsSection" class="page-section">
+      <h2 class="page-title">Patient Prescriptions</h2>
+      <p class="page-subtitle">Create and manage prescriptions for admitted and registered patients.</p>
+
+      <div id="prescriptionMessage" class="message"></div>
+
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <h3 id="prescriptionFormTitle">Create Prescription</h3>
+            <form id="prescriptionForm" onsubmit="return savePrescription()">
+              <fieldset>
+                <legend>Prescription Details</legend>
+                <table class="form-table">
+                  <tr>
+                    <td><label for="prescriptionPatient">Patient:</label></td>
+                    <td>
+                      <select id="prescriptionPatient">
+                        <option value="">Select a patient</option>
+                        <option value="Rahim Uddin">Rahim Uddin - PAT-001</option>
+                        <option value="Nusrat Jahan">Nusrat Jahan - PAT-002</option>
+                        <option value="Sakib Hasan">Sakib Hasan - PAT-003</option>
+                      </select>
+                      <span class="error" id="prescriptionPatientError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="prescriptionDiagnosis">Diagnosis:</label></td>
+                    <td>
+                      <input type="text" id="prescriptionDiagnosis" placeholder="Enter diagnosis">
+                      <span class="error" id="prescriptionDiagnosisError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="prescriptionMedicine">Medicine:</label></td>
+                    <td>
+                      <input type="text" id="prescriptionMedicine" placeholder="Medicine name">
+                      <span class="error" id="prescriptionMedicineError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="prescriptionDosage">Dosage:</label></td>
+                    <td>
+                      <input type="text" id="prescriptionDosage" placeholder="e.g. 500 mg">
+                      <span class="error" id="prescriptionDosageError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="prescriptionFrequency">Frequency:</label></td>
+                    <td>
+                      <input type="text" id="prescriptionFrequency" placeholder="e.g. Twice daily">
+                      <span class="error" id="prescriptionFrequencyError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="prescriptionDuration">Duration:</label></td>
+                    <td>
+                      <input type="text" id="prescriptionDuration" placeholder="e.g. 5 days">
+                      <span class="error" id="prescriptionDurationError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="prescriptionInstructions">Instructions:</label></td>
+                    <td>
+                      <textarea id="prescriptionInstructions" rows="3" cols="30"
+                        placeholder="Additional instructions"></textarea>
+                      <span class="error" id="prescriptionInstructionsError"></span>
+                    </td>
+                  </tr>
+                </table>
+              </fieldset>
+              <input type="submit" id="prescriptionSaveButton" class="btn" value="Save Prescription">
+              <button type="button" class="btn btn-secondary" onclick="resetPrescriptionForm()">Cancel</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-wide">
+          <div class="card">
+            <h3>Prescription Records</h3>
+            <div class="search-bar">
+              <input type="text" id="prescriptionSearch"
+                placeholder="Search by patient, diagnosis, medicine or prescription id..."
+                onkeyup="renderPrescriptions()">
+              <select id="prescriptionPatientFilter" onchange="renderPrescriptions()">
+                <option value="All">All patients</option>
+                <option value="Rahim Uddin">Rahim Uddin</option>
+                <option value="Nusrat Jahan">Nusrat Jahan</option>
+                <option value="Sakib Hasan">Sakib Hasan</option>
+              </select>
+            </div>
+            <p class="result-count" id="prescriptionCount"></p>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Patient</th>
+                    <th>Diagnosis</th>
+                    <th>Medicine</th>
+                    <th>Dosage</th>
+                    <th>Frequency</th>
+                    <th>Duration</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="prescriptionTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="scheduleSection" class="page-section">
+      <h2 class="page-title">Schedule &amp; Reschedule Appointments</h2>
+      <p class="page-subtitle">Manage your appointment schedule. Marking yourself unavailable automatically reschedules
+        the appointment to the next day and generates a Notify ID for the Receptionist to notify the patient.</p>
+
+      <div id="scheduleMessage" class="message"></div>
+
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <h3 id="scheduleFormTitle">Manage / Reschedule Appointment</h3>
+            <form id="scheduleForm" onsubmit="return saveSchedule()">
+              <fieldset>
+                <legend>Appointment &amp; Reschedule Details</legend>
+                <table class="form-table">
+                  <tr>
+                    <td><label for="schedulePatient">Patient:</label></td>
+                    <td>
+                      <select id="schedulePatient">
+                        <option value="">Select a patient</option>
+                        <option value="Rahim Uddin">Rahim Uddin - PAT-001</option>
+                        <option value="Nusrat Jahan">Nusrat Jahan - PAT-002</option>
+                        <option value="Sakib Hasan">Sakib Hasan - PAT-003</option>
+                      </select>
+                      <span class="error" id="schedulePatientError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="scheduleDate">Appointment date:</label></td>
+                    <td>
+                      <input type="date" id="scheduleDate">
+                      <span class="error" id="scheduleDateError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="scheduleTime">Appointment time:</label></td>
+                    <td>
+                      <input type="time" id="scheduleTime">
+                      <span class="error" id="scheduleTimeError"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="scheduleReason">Reason / notes:</label></td>
+                    <td>
+                      <textarea id="scheduleReason" rows="3" cols="30"
+                        placeholder="Add appointment notes or reason for rescheduling"></textarea>
+                      <span class="error" id="scheduleReasonError"></span>
+                    </td>
+                  </tr>
+                </table>
+              </fieldset>
+              <input type="submit" id="scheduleSaveButton" class="btn" value="Save Schedule">
+              <button type="button" class="btn btn-secondary" onclick="resetScheduleForm()">Cancel</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-wide">
+          <div class="card">
+            <h3>Appointment &amp; Reschedule List</h3>
+            <div class="search-bar">
+              <input type="text" id="scheduleSearch"
+                placeholder="Search by patient, appointment id, notify id or date..." onkeyup="renderSchedule()">
+              <select id="scheduleStatusFilter" onchange="renderSchedule()">
+                <option value="All">Any status</option>
+                <option value="Scheduled">Scheduled</option>
+                <option value="Rescheduled">Rescheduled</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+            <p class="result-count" id="scheduleCount"></p>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Appointment ID</th>
+                    <th>Patient</th>
+                    <th>Original Date</th>
+                    <th>Time</th>
+                    <th>Availability</th>
+                    <th>New Date</th>
+                    <th>Notify ID (Receptionist)</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="scheduleTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="historySection" class="page-section">
+      <h2 class="page-title">Patient Medical History</h2>
+      <p class="page-subtitle">Search a patient's previous medical records and download their medical history.</p>
+
+      <div id="historyMessage" class="message"></div>
+
+      <div class="card">
+        <div class="search-bar">
+          <input type="text" id="historySearch" placeholder="Search by patient name, patient id or diagnosis..."
+            onkeyup="renderMedicalHistory()">
+          <select id="historyPatientFilter" onchange="renderMedicalHistory()">
+            <option value="All">All patients</option>
+            <option value="Rahim Uddin">Rahim Uddin</option>
+            <option value="Nusrat Jahan">Nusrat Jahan</option>
+            <option value="Sakib Hasan">Sakib Hasan</option>
+          </select>
+        </div>
+        <p class="result-count" id="historyCount"></p>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Record ID</th>
+                <th>Patient ID</th>
+                <th>Patient Name</th>
+                <th>Visit Date</th>
+                <th>Diagnosis</th>
+                <th>Treatment</th>
+                <th>Doctor</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="medicalHistoryTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    <section id="messagesSection" class="page-section">
+      <h2 class="page-title">Admin Messages</h2>
+      <p class="page-subtitle">Messages and meeting notices from Hospital Administration.</p>
+      <div class="card">
+        <h3>Messages from Admin</h3>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Doctor</th>
+                <th>Subject</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Message</th>
+              </tr>
+            </thead>
+            <tbody id="adminMessagesTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 CareNest Hospital
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/doctor.js"></script>
+</body>
+
+</html>
