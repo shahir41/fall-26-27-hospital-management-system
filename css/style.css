@@ -878,3 +878,96 @@ input[type="checkbox"] {
   font-weight: bold;
   white-space: nowrap;
 }
+
+.form-body,
+.type-fields {
+  display: none;
+}
+
+.type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.type-option {
+  display: block;
+  border: 2px solid #C5D6CA;
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  font-weight: normal;
+  background-color: white;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+.type-option:hover {
+  border-color: #2E7D32;
+}
+
+.type-option strong {
+  font-size: 1.05rem;
+  color: #143625;
+}
+
+.type-option .hint {
+  display: block;
+  margin-top: 4px;
+}
+
+.type-option.selected {
+  border-color: #1B5E20;
+  background-color: #E8F5E9;
+}
+
+.btn-block {
+  width: 100%;
+  padding: 11px;
+  font-size: 1rem;
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: 16px;
+}
+
+.register-box {
+  max-width: 750px;
+  margin: 35px auto;
+}
+
+.register-box .form-group {
+  margin-bottom: 18px;
+}
+
+.register-box .form-group>label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.register-box h3 {
+  margin: 24px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #E4EFE8;
+}
+
+.register-box input,
+.register-box select,
+.register-box textarea {
+  width: 100%;
+}
+
+.register-box input[type="checkbox"] {
+  width: auto;
+}
+
+.register-box .terms-label {
+  display: inline;
+  font-weight: normal;
+}
+
+.register-box button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+}
