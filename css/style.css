@@ -544,3 +544,84 @@ input[type="checkbox"] {
   line-height: 28px;
   transition: width 0.6s;
 }
+
+.notice-board {
+  height: 380px;
+  overflow-y: auto;
+  border: 1px solid #C5D6CA;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #F6FBF7;
+}
+
+.log-item {
+  background-color: white;
+  border-left: 5px solid #1B5E20;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.log-item .log-time {
+  font-size: 0.8rem;
+  color: #888888;
+}
+
+
+.result-box {
+  background-color: #E8F5E9;
+  border: 2px dashed #81C784;
+  border-radius: 10px;
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.result-box .big {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #1B5E20;
+}
+
+.reminder {
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border-left: 8px solid #2E7D32;
+  background-color: #F1F8F1;
+}
+
+.reminder h4 {
+  margin-bottom: 2px;
+}
+
+
+.hero {
+  background-color: #143625;
+  color: white;
+  text-align: center;
+  padding: 70px 20px;
+}
+
+.hero h1 {
+  color: white;
+  font-size: 2.6rem;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.15rem;
+  color: #CFE3D5;
+  max-width: 650px;
+  margin: 0 auto 24px auto;
+}
+
+.hero .btn {
+  margin: 4px;
+  padding: 12px 28px;
+}
+
+.section-heading {
+  text-align: center;
+  margin: 10px 0 24px 0;
+}
