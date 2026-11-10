@@ -625,3 +625,100 @@ input[type="checkbox"] {
   text-align: center;
   margin: 10px 0 24px 0;
 }
+
+.hero-search {
+  max-width: 640px;
+  margin: 26px auto 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hero-search input {
+  flex: 3;
+  min-width: 220px;
+  padding: 13px 16px;
+  font-size: 1rem;
+  border: none;
+}
+
+.hero-search select {
+  flex: 1;
+  min-width: 150px;
+  border: none;
+}
+
+.hero-note {
+  font-size: 0.9rem;
+  color: #B4C8BB;
+  margin-top: 10px;
+}
+
+.home-section {
+  padding: 40px 0 10px 0;
+}
+
+.section-heading p {
+  color: #556B5E;
+  font-weight: normal;
+  font-size: 1rem;
+  margin-top: 6px;
+}
+
+.feature-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.feature {
+  text-align: center;
+  padding: 18px;
+}
+
+.feature .feature-icon {
+  display: inline-block;
+  width: 52px;
+  height: 52px;
+  line-height: 52px;
+  border-radius: 50%;
+  background-color: #E8F5E9;
+  color: #1B5E20;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.role-card .btn {
+  margin-top: 14px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.step {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  position: relative;
+  padding-top: 34px;
+}
+
+.step-number {
+  position: absolute;
+
+  top: -16px;
+  left: 20px;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: #1B5E20;
+  color: white;
+  font-weight: bold;
+}
