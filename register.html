@@ -38,29 +38,32 @@
 
       <div class="card register-box">
 
-        <form id="registerForm" action="login.html" method="get" onsubmit="return validateRegister()">
+        <form id="registerForm" action="login.html" method="get" onsubmit="return validateRegister()" novalidate>
 
           <h3>Personal Information</h3>
 
           <div class="form-group">
             <label for="fullname">Full Name</label>
-            <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
+            <input type="text" id="fullname" name="fullname" placeholder="Enter your full name">
+            <span class="error" id="fullnameError"></span>
           </div>
 
           <div class="form-group">
             <label for="dob">Date of Birth</label>
-            <input type="date" id="dob" name="dob" required>
+            <input type="date" id="dob" name="dob">
+            <span class="error" id="dobError"></span>
           </div>
 
           <div class="form-group">
             <label for="gender">Gender</label>
-            <select id="gender" name="gender" required>
+            <select id="gender" name="gender">
               <option value="">Select Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Other">Other</option>
               <option value="Prefer not to say">Prefer not to say</option>
             </select>
+            <span class="error" id="genderError"></span>
           </div>
 
           <div class="form-group">
@@ -82,38 +85,42 @@
 
           <div class="form-group">
             <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" placeholder="example@email.com" required>
+            <input type="email" id="email" name="email" placeholder="example@email.com">
+            <span class="error" id="emailError"></span>
           </div>
 
           <div class="form-group">
             <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="01XXXXXXXXX" pattern="01[3-9][0-9]{8}"
-              title="Enter a valid 11-digit Bangladeshi mobile number" required>
+            <input type="tel" id="phone" name="phone" placeholder="01XXXXXXXXX">
+            <span class="error" id="phoneError"></span>
           </div>
 
           <div class="form-group">
             <label for="address">Address</label>
-            <textarea id="address" name="address" placeholder="Enter your present address" rows="3" required></textarea>
+            <textarea id="address" name="address" placeholder="Enter your present address" rows="3"></textarea>
+            <span class="error" id="addressError"></span>
           </div>
 
           <h3>Account Information</h3>
 
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Create a password" minlength="8" required>
+            <input type="password" id="password" name="password" placeholder="Create a password">
+            <span class="error" id="passwordError"></span>
           </div>
 
           <div class="form-group">
             <label for="confirmPassword">Confirm Password</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password"
-              minlength="8" required>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password">
+            <span class="error" id="confirmPasswordError"></span>
           </div>
 
           <div class="form-group">
             <label>
-              <input type="checkbox" name="terms" required>
+              <input type="checkbox" id="terms" name="terms">
               I agree to the Terms and Conditions and Privacy Policy.
             </label>
+            <span class="error" id="termsError"></span>
           </div>
 
           <button type="submit" class="btn">
