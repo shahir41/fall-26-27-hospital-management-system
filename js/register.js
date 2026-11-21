@@ -1,34 +1,71 @@
 function validateRegister() {
-  let fullnameEl = document.getElementById("fullname");
-  let dobEl = document.getElementById("dob");
-  let genderEl = document.getElementById("gender");
-  let emailEl = document.getElementById("email");
-  let phoneEl = document.getElementById("phone");
-  let addressEl = document.getElementById("address");
-  let passwordEl = document.getElementById("password");
-  let confirmPasswordEl = document.getElementById("confirmPassword");
+  let fullname = document.getElementById("fullname").value.trim();
+  let dob = document.getElementById("dob").value;
+  let gender = document.getElementById("gender").value;
+  let email = document.getElementById("email").value.trim();
+  let phone = document.getElementById("phone").value.trim();
+  let address = document.getElementById("address").value.trim();
+  let password = document.getElementById("password").value;
+  let confirmPassword = document.getElementById("confirmPassword").value;
+  let termsChecked = document.getElementById("terms").checked;
 
-  let fullname = fullnameEl ? fullnameEl.value.trim() : "";
-  let dob = dobEl ? dobEl.value : "";
-  let gender = genderEl ? genderEl.value : "";
-  let email = emailEl ? emailEl.value.trim() : "";
-  let phone = phoneEl ? phoneEl.value.trim() : "";
-  let address = addressEl ? addressEl.value.trim() : "";
-  let password = passwordEl ? passwordEl.value : "";
-  let confirmPassword = confirmPasswordEl ? confirmPasswordEl.value : "";
+  let fields = [
+    "fullname", "dob", "gender", "email", "phone",
+    "address", "password", "confirmPassword", "terms"
+  ];
+  clearErrors(fields);
 
-  if (fullname === "" || dob === "" || gender === "" || email === "" || phone === "" || address === "" || password === "") {
-    alert("Please fill all required fields.");
-    return false;
+  let isValid = true;
+
+  if (fullname.length < 3) {
+    showError("fullname", "Full name must be at least 3 characters.");
+    isValid = false;
+  }
+
+  if (dob === "") {
+    showError("dob", "Please select your date of birth.");
+    isValid = false;
+  }
+
+  if (gender === "") {
+    showError("gender", "Please select a gender.");
+    isValid = false;
+  }
+
+  if (email === "" || email.indexOf("@") === -1 || email.indexOf(".") === -1) {
+    showError("email", "Please enter a valid email address.");
+    isValid = false;
+  }
+
+  if (!/^01[3-9][0-9]{8}$/.test(phone)) {
+    showError("phone", "Enter a valid 11-digit Bangladeshi mobile number (01XXXXXXXXX).");
+    isValid = false;
+  }
+
+  if (address === "") {
+    showError("address", "Please enter your present address.");
+    isValid = false;
   }
 
   if (password.length < 8) {
-    alert("Password must be at least 8 characters.");
-    return false;
+    showError("password", "Password must be at least 8 characters.");
+    isValid = false;
   }
 
-  if (password !== confirmPassword) {
-    alert("Passwords do not match!");
+  if (confirmPassword === "") {
+    showError("confirmPassword", "Please confirm your password.");
+    isValid = false;
+  } else if (password !== confirmPassword) {
+    showError("confirmPassword", "Passwords do not match.");
+    isValid = false;
+  }
+
+  if (!termsChecked) {
+    showError("terms", "You must agree to the Terms and Conditions.");
+    isValid = false;
+  }
+
+  if (!isValid) {
     return false;
   }
 
